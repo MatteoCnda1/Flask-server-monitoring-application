@@ -1,0 +1,62 @@
+{% extends "index.html" %}
+{% block body %}
+<h2>Servers Management page</h2>
+<p>Here you can add, modify or remove servers.<p>
+
+<table>
+	<caption>
+		Users list
+	</caption>
+	<thead>
+	 <tr>
+		 <th scope="col">Hostname</th>
+		 <th scope="col">ipv4</th>
+		 <th scope="col">Action</th>
+	 </tr>
+	</thead>
+
+	<tbody>
+		{% for user in users %}
+	 <tr>
+		 <td>{{user.nom_user}}</td>
+		 <td> {% if user.role_id == 1%}
+			 Admin
+		      {% elif user.role_id == 2 %}
+		         Server Management
+		      {% elif user.role_id == 3%}
+		      	 User
+		      {% else %}
+		         Unknown
+		      {% endif %}
+		 </td>
+		 <td> 
+			 <form method="POST" action="/update_user/{{user.id}}">
+				 <button type="submit">Modify</button>
+			 </form>
+			 <form method="GET" action="/delete_user/{{ user.id }}">
+				 <button type="submit" onclick="return confirm('delete {{user.nom_user}} ? ')">Remove</button>
+			</form>
+		 </td>
+	 </tr>
+	        {% endfor %}
+	</tbody>
+</table>
+
+<h3>Add users</h3>
+<p>User (Name - Role ID)</p>
+
+	<form method="POST" action="/add_user">
+		<label>Type the name of the user</label>
+		<input type="text" name="nom">
+		<label>Enter the password of the user</label>
+		<input type="text" name="password">
+		<label>Enter the role of the user</label>
+		<select name="role" id="role">
+			<option value="1">Admin</option>
+			<option value="2">Server Manager</option>
+			<option value="3">User</option>
+		</select>
+		<input type="submit" value="Ajouter">
+
+
+{% endblock %}

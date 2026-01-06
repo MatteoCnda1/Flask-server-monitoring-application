@@ -1,0 +1,57 @@
+{% extends "index.html" %}
+{% block body %}
+<h2>Servers Management page</h2>
+<p>Here you can add, modify or remove servers.<p>
+
+<table>
+	<caption>
+		Users list
+	</caption>
+	<thead>
+	 <tr>
+		 <th scope="col">Hostname</th>
+		 <th scope="col">ipv4</th>
+		 <th scope="col">Action</th>
+	 </tr>
+	</thead>
+
+	<tbody>
+		{% for host in hosts %}
+	 <tr>
+		 <td>{{host.hostname}}</td>
+		 <td> {{host.ipv4}}</td>
+		 <td> 
+			 <form method="POST" action="/update_server/{{host.id}}">
+				 <button type="submit">Modify</button>
+			 </form>
+			 <form method="GET" action="/delete/{{ host.id }}">
+				 <button type="submit" onclick="return confirm('delete {{host.hostname}} ? ')">Remove</button>
+			 </form>
+		 </td>
+	 </tr>
+	        {% endfor %}
+	</tbody>
+</table>
+
+
+<h3>Add servers</h3>
+<p>Server (Hostname - IP)</p>
+
+	<form method="POST" action="/add_server">
+		<label>Type the name of the server</label>
+		<input type="text" name="nom">
+		<label>Type his IPV4</label>
+		<input type="text" name="ipv4">
+		<input type="submit" value="Ajouter">
+
+	{% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+{% endblock %}

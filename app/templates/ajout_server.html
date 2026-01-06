@@ -1,0 +1,17 @@
+{% extends 'index.html' %}
+{% block body %}
+
+<h2>Add Servers</h2>
+
+        <form method="POST" action="/add_server">
+          <label>Type the name of the server </label>
+          <input type="text" name="nom">
+          <label>Type his Ipv4</label>
+          <input type="text" name="ipv4">
+          <input type="submit" value="Ajouter">
+
+        </form>
+
+
+{% endblock %}
+

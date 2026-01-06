@@ -1,0 +1,636 @@
+/* ========================================
+   GENERAL
+======================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.dashboard-container {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+/* ========================================
+   WELCOME SECTION
+======================================== */
+.welcome-section {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.welcome-section h1 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.welcome-section p {
+    color: #666;
+}
+
+/* ========================================
+   ROLE TOKENS
+======================================== */
+.role-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.role-admin {
+    background-color: #dc3545;
+    color: white;
+}
+
+.role-supervisor {
+    background-color: #ffc107;
+    color: #333;
+}
+
+.role-user {
+    background-color: #17a2b8;
+    color: white;
+}
+
+/* ========================================
+   ACTION GRID
+======================================== */
+.actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* ========================================
+   ACTION CARD
+======================================== */
+.action-card {
+    background-color: #ffffff;
+    border: 2px solid #2563eb;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s, transform 0.1s;
+    cursor: pointer;
+    text-decoration: none;
+    color: #333;
+    display: block;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    border-color: #1d4ed8;
+}
+
+.action-card:active {
+    transform: scale(0.98);
+}
+
+.action-card h3 {
+    color: #2563eb;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+.action-card p {
+    color: #666;
+    font-size: 14px;
+}
+
+/* ========================================
+   DISABLED CARD
+======================================== */
+.action-card.disabled {
+    background-color: #f9f9f9;
+    border-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.action-card.disabled:hover {
+    transform: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.action-card.disabled h3 {
+    color: #999;
+}
+
+.action-card.disabled p {
+    color: #aaa;
+}
+
+.lock-icon {
+    font-size: 24px;
+    color: #999;
+    margin-bottom: 10px;
+}
+
+/* ========================================
+   ALERTS / MESSAGES FLASH
+======================================== */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+}
+
+.alert-info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+/* ========================================
+   TOOLTIPS
+======================================== */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 220px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 10px;
+    padding: 10px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -110px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* ========================================
+   FORMS
+======================================== */
+form {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    font-family: Arial, sans-serif;
+}
+
+.form-group {
+    margin-bottom: 14px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    color: #333;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 6px rgba(37,99,235,0.3);
+    outline: none;
+}
+
+::placeholder {
+    color: #aaa;
+}
+
+.password-hint, .hint {
+    font-size: 12px;
+    color: #666;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+/* ========================================
+   BUTTONS
+======================================== */
+button, 
+input[type="submit"], 
+input[type="button"], 
+input[type="reset"] {
+    padding: 10px 16px;
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: opacity 0.2s, transform 0.1s;
+}
+
+button:hover,
+input[type="submit"]:hover {
+    opacity: 0.9;
+}
+
+button:active,
+input[type="submit"]:active {
+    transform: scale(0.98);
+}
+
+.btn-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-submit {
+    flex: 1;
+    background-color: #28a745;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    transition: opacity 0.2s, transform 0.1s;
+}
+
+.btn-submit:hover {
+    opacity: 0.9;
+}
+
+.btn-submit:active {
+    transform: scale(0.98);
+}
+
+.btn-cancel {
+    flex: 1;
+    background-color: #6c757d;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+    font-size: 15px;
+    transition: opacity 0.2s, transform 0.1s;
+}
+
+.btn-cancel:hover {
+    opacity: 0.9;
+}
+
+.btn-cancel:active {
+    transform: scale(0.98);
+}
+
+.btn-edit {
+    background-color: #28a745;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 6px;
+    text-decoration: none;
+    margin-right: 5px;
+    display: inline-block;
+    font-size: 14px;
+    transition: opacity 0.2s, transform 0.1s;
+}
+
+.btn-edit:hover {
+    opacity: 0.9;
+}
+
+.btn-edit:active {
+    transform: scale(0.98);
+}
+
+.btn-remove {
+    background-color: #dc3545;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: opacity 0.2s, transform 0.1s;
+}
+
+.btn-remove:hover {
+    opacity: 0.9;
+}
+
+.btn-remove:active {
+    transform: scale(0.98);
+}
+
+.btn-view {
+    background-color: #2563eb;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: opacity 0.2s, transform 0.1s;
+}
+
+.btn-view:hover {
+    opacity: 0.9;
+}
+
+.btn-view:active {
+    transform: scale(0.98);
+}
+
+/* ========================================
+   TABLES
+======================================== */
+table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+caption {
+    caption-side: top;
+    font-size: 1.3em;
+    font-weight: bold;
+    padding: 10px;
+    color: #333;
+}
+
+thead {
+    background-color: #0078d7;
+    color: white;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+tbody tr:hover {
+    background-color: #e9f3ff;
+}
+
+/* ========================================
+   CONTENEURS SPÉCIFIQUES
+======================================== */
+.edit-user-container,
+.edit-server-container,
+.log-choice-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.edit-user-container h2,
+.edit-server-container h2,
+.log-choice-container h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* ========================================
+   LOGS
+======================================== */
+.logs-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.logs-header {
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logs-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.logs-table th {
+    background-color: #0078d7;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    font-weight: bold;
+}
+
+.logs-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.logs-table tr:hover {
+    background-color: #e9f3ff;
+}
+
+.btn-back {
+    background-color: #6c757d;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 6px;
+    display: inline-block;
+    margin-bottom: 20px;
+    transition: opacity 0.2s, transform 0.1s;
+}
+
+.btn-back:hover {
+    opacity: 0.9;
+}
+
+.btn-back:active {
+    transform: scale(0.98);
+}
+
+.service-badge {
+    background-color: #2563eb;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.kernel-badge {
+    background-color: #dc3545;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+/* ========================================
+   NAVBAR (OPTIONNEL)
+======================================== */
+.navbar {
+    background-color: #343a40;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nav-brand h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.nav-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* ========================================
+   MENU (OPTIONNEL)
+======================================== */
+.menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.menu li {
+    flex: 1;
+}
+
+.menu-item {
+    display: block;
+    padding: 15px 20px;
+    text-decoration: none;
+    color: #333;
+    text-align: center;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s;
+}
+
+.menu-item:hover {
+    background-color: #e9f3ff;
+    border-bottom-color: #2563eb;
+}
+
+.menu-item.active {
+    background-color: #2563eb;
+    color: white;
+    border-bottom-color: #1d4ed8;
+}
+
+.menu-item.disabled {
+    color: #999;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.menu-item.disabled:hover {
+    background-color: transparent;
+    border-bottom-color: transparent;
+}
+
+.menu-item.logout {
+    background-color: #dc3545;
+    color: white;
+}
+
+.menu-item.logout:hover {
+    background-color: #c82333;
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+@media (max-width: 768px) {
+    .actions-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    table {
+        width: 95%;
+    }
+    
+    form {
+        max-width: 90%;
+    }
+    
+    .edit-user-container,
+    .edit-server-container,
+    .log-choice-container {
+        max-width: 90%;
+    }
+}

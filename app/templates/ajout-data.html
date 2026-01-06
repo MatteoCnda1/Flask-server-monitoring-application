@@ -1,0 +1,17 @@
+{% extends 'index.html' %}
+{% block body %}
+
+<h2>Ajout d'hotes !</h2>
+
+        <form method="POST" action="/add_data">
+          <label>Entrez le nom de l'hote : </label>
+          <input type="text" name="nom">
+          <label>Entrez l'ipv4 de l'hote</label>
+          <input type="text" name="ipv4">
+          <input type="submit" value="Ajouter">
+
+        </form>
+
+
+{% endblock %}
+

@@ -1,0 +1,69 @@
+{% extends "index.html" %}
+
+{% block body %}
+<div class="log-choice-container">
+    <h2>Server's log selection</h2>
+    <p>You can select a server to view its system logs.</p>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+    {% if machines %}
+        <form method="POST" action="{{ url_for('user.view_logs') }}">
+            <div class="form-group">
+                <label for="machine_id">Select a server:</label>
+                <select name="machine_id" id="machine_id" required>
+                    <option value="">-- Choose a server --</option>
+                    {% for machine in machines %}
+                        <option value="{{ machine.id }}">
+                            {{ machine.hostname }} ({{ machine.ipv4 }})
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <button type="submit" class="btn-view">View Logs</button>
+        </form>
+    {% else %}
+        <div class="alert alert-warning">
+            <p>No servers available. Please add servers first.</p>
+            {% if session.get('role_id') in [1, 2] %}
+                <a href="{{ url_for('user.server_management') }}" class="btn-submit">Add Server</a>
+            {% endif %}
+        </div>
+    {% endif %}
+    
+    {% if machines %}
+        <div style="margin-top: 40px;">
+            <h3>Available Servers</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Hostname</th>
+                        <th>IPv4</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for machine in machines %}
+                        <tr>
+                            <td>{{ machine.hostname }}</td>
+                            <td>{{ machine.ipv4 }}</td>
+                            <td>
+                                <span style="color: green;">✓ Active</span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

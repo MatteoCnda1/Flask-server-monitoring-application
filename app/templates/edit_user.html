@@ -1,0 +1,88 @@
+{% extends "index.html" %}
+
+{% block body %}
+
+<div class="edit-user-container">
+    <h2>Edit User: {{ user.nom_user }}</h2>
+    
+    <!-- Messages flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+    <form method="POST" action="{{ url_for('user.update_user', user_id=user.id) }}">
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input 
+                type="text" 
+                id="username" 
+                name="username" 
+                value="{{ user.nom_user }}" 
+                required
+                placeholder="Enter username">
+        </div>
+        
+        <div class="form-group">
+            <label for="password1">New Password:</label>
+            <input 
+                type="password" 
+                id="password1" 
+                name="password1" 
+                placeholder="Leave empty to keep current password">
+            <div class="password-hint">Leave empty if you don't want to change the password</div>
+        </div>
+        
+        <div class="form-group">
+            <label for="password2">Confirm New Password:</label>
+            <input 
+                type="password" 
+                id="password2" 
+                name="password2" 
+                placeholder="Confirm new password">
+            <div class="password-hint">Must match the password above</div>
+        </div>
+        
+        <div class="form-group">
+            <label for="role">Role:</label>
+            <select name="role" id="role" required>
+                <option value="1" {% if user.role_id == 1 %}selected{% endif %}>Administrator (Full Access)</option>
+                <option value="2" {% if user.role_id == 2 %}selected{% endif %}>Server Management (Logs + Servers)</option>
+                <option value="3" {% if user.role_id == 3 %}selected{% endif %}>User (Logs Only)</option>
+            </select>
+        </div>
+        
+        <div class="btn-group">
+            <button type="submit" class="btn-submit">Save Changes</button>
+            <a href="{{ url_for('user.user_management') }}" class="btn-cancel">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const password1 = document.getElementById('password1').value;
+        const password2 = document.getElementById('password2').value;
+        
+        if (password1 || password2) {
+            if (password1 !== password2) {
+                e.preventDefault();
+                alert('Password aren\'t the same');
+                return false;
+            }
+            
+            if (password1.length < 4) {
+                e.preventDefault();
+                alert('The lenght must be equal or over 4 characters');
+                return false;
+            }
+        }
+    });
+</script>
+
+{% endblock %}

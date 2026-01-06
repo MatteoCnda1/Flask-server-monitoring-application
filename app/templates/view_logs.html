@@ -1,0 +1,62 @@
+{% extends "index.html" %}
+
+{% block body %}
+<div class="logs-container">
+    <a href="{{ url_for('user.log_choice') }}" class="btn-back">Back to server selection</a>
+    
+    <div class="logs-header">
+        <h2>Combined Logs from {{ machines|length }} Server(s)</h2>
+        
+        <p><strong>Sources:</strong>
+            {% for machine in machines %}
+                {{ machine.hostname }} ({{ machine.ipv4 }}){% if not loop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+        
+        <p><strong>Total events:</strong> {{ total_events }}</p>
+        <p><strong>Retrieved at:</strong> {{ retrieved_at }}</p>
+    </div>
+    
+    {% if evenements %}
+        <table class="logs-table">
+            <thead>
+                <tr>
+                    <th>Server</th>
+                    <th>Date &amp; Time</th>
+                    <th>Host</th>
+                    <th>Service/Type</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for evt in evenements %}
+                    {% set info = evt.info() %}
+                    <tr>
+                        <td>{{ evt._source_hostname }}</td>
+                        <td>{{ info.date_heure.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        <td>{{ info.hote }}</td>
+                        <td>
+                            {% if info.service == 'kernel' %}
+                                <span class="kernel-badge">{{ info.service }}</span>
+                                <br><small>TS: {{ "%.2f"|format(info.timestamp) }}</small>
+                            {% else %}
+                                <span class="service-badge">{{ info.service }}</span>
+                                <br><small>PID: {{ info.pid }}</small>
+                            {% endif %}
+                        </td>
+                        <td>{{ info.msg }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-warning">
+            <p>No logs found for selected servers.</p>
+        </div>
+    {% endif %}
+    
+    <div>
+        <a href="{{ url_for('user.log_choice') }}" class="btn-view">Select Different Servers</a>
+    </div>
+</div>
+{% endblock %}

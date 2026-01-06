@@ -1,0 +1,56 @@
+{% extends "index.html" %}
+
+{% block body %}
+<div class="logs-container">
+    <a href="{{ url_for('user.log_choice') }}" class="btn-back">← Back to server selection</a>
+    
+    <div class="logs-header">
+        <h2>Logs from {{ machine.hostname }}</h2>
+        <p><strong>IP:</strong> {{ machine.ipv4 }}</p>
+        <p><strong>Total events:</strong> {{ evenements|length }}</p>
+        <p><strong>Retrieved at:</strong> {{ retrieved_at }}</p>
+    </div>
+    
+    {% if evenements %}
+        <table class="logs-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Date & Time</th>
+                    <th>Host</th>
+                    <th>Service/Type</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for evt in evenements %}
+                    {% set info = evt.info() %}
+                    <tr>
+                        <td>{{ info.id }}</td>
+                        <td>{{ info.date_heure.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        <td>{{ info.hote }}</td>
+                        <td>
+                            {% if info.service == 'kernel' %}
+                                <span class="kernel-badge">{{ info.service }}</span>
+                                <br><small>TS: {{ "%.2f"|format(info.timestamp) }}</small>
+                            {% else %}
+                                <span class="service-badge">{{ info.service }}</span>
+                                <br><small>PID: {{ info.pid }}</small>
+                            {% endif %}
+                        </td>
+                        <td style="max-width: 500px; word-wrap: break-word;">{{ info.msg }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-warning">
+            <p>No logs found for this server.</p>
+        </div>
+    {% endif %}
+    
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="{{ url_for('user.log_choice') }}" class="btn-view">View Another Server</a>
+    </div>
+</div>
+{% endblock %}

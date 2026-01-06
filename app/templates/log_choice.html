@@ -1,0 +1,85 @@
+{% extends "index.html" %}
+
+{% block body %}
+<div class="log-choice-container">
+    <h2>Server's log selection</h2>
+    <p>You can select one or multiple servers to view their logs.</p>
+    <p>Hold Ctrl (Windows/Linux) or Cmd (Mac) to select multiple servers</p>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+    {% if machines %}
+        <form method="POST" action="{{ url_for('user.view_logs') }}">
+            <div class="form-group">
+                <label for="machine_ids">Select server(s):</label>
+                <select name="machine_ids" id="machine_ids" multiple size="8" required>
+                    {% for machine in machines %}
+                        <option value="{{ machine.id }}">
+                            {{ machine.hostname }} ({{ machine.ipv4 }})
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="sort_order">Sort logs by:</label>
+                <select name="sort_order" id="sort_order">
+                    <option value="desc">Most recent first</option>
+                    <option value="asc">Oldest first</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="nb_lignes">Number of lines per server:</label>
+                <select name="nb_lignes" id="nb_lignes">
+                    <option value="50">50 lines</option>
+                    <option value="100" selected>100 lines</option>
+                    <option value="200">200 lines</option>
+                    <option value="500">500 lines</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="btn-view">View Logs</button>
+        </form>
+    {% else %}
+        <div class="alert alert-warning">
+            <p>No servers available. Please add servers first.</p>
+            {% if session.get('role_id') in [1, 2] %}
+                <a href="{{ url_for('user.server_management') }}" class="btn-submit">Add Server</a>
+            {% endif %}
+        </div>
+    {% endif %}
+    
+    {% if machines %}
+        <div>
+            <h3>Available Servers ({{ machines|length }})</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Hostname</th>
+                        <th>IPv4</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for machine in machines %}
+                        <tr>
+                            <td>{{ machine.hostname }}</td>
+                            <td>{{ machine.ipv4 }}</td>
+                            <td>Active</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

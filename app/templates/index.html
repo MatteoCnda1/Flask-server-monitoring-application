@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log Monitoring Panel</title>
+    <link rel="stylesheet" href="/static/style.css" />
+</head>
+
+
+
+<body>
+    <div class="dashboard-container">
+
+		{% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        {% if session.get('username') %}
+            <div class="welcome-section">
+                <h1>
+                    Welcome, {{ session['username'] }}!
+                    {% if session.get('role_id') == 1 %}
+                        <span class="role-badge role-admin">Administrator</span>
+                    {% elif session.get('role_id') == 2 %}
+                        <span class="role-badge role-supervisor">Supervisor</span>
+                    {% else %}
+                        <span class="role-badge role-user">User</span>
+                    {% endif %}
+                </h1>
+                <p>You are logged in to the Log Monitoring Panel.</p>
+            </div>
+            
+            <div class="actions-grid">
+
+				<a href="{{ url_for('user.log_choice') }}" class="action-card">
+                    <h3>View Logs</h3>
+                    <p>Consult system logs from servers</p>
+                </a>
+                
+
+				{% if session.get('role_id') in [1, 2] %}
+                    <a href="{{ url_for('user.server_management') }}" class="action-card">
+                        <h3>Server Management</h3>
+                        <p>Add, modify or remove servers</p>
+                    </a>
+                {% else %}
+                    <div class="action-card disabled tooltip">
+                        <div class="lock-icon">🔒</div>
+                        <h3>Server Management</h3>
+                        <p>Access denied</p>
+                        <span class="tooltiptext">This feature requires Supervisor or Administrator privileges</span>
+                    </div>
+                {% endif %}
+                
+
+				{% if session.get('role_id') == 1 %}
+                    <a href="{{ url_for('user.user_management') }}" class="action-card">
+                        <h3>User Management</h3>
+                        <p>Manage users and permissions</p>
+                    </a>
+                {% else %}
+                    <div class="action-card disabled tooltip">
+                        <div class="lock-icon">🔒</div>
+                        <h3>User Management</h3>
+                        <p>Access denied</p>
+                        <span class="tooltiptext">This feature requires Administrator privileges</span>
+                    </div>
+                {% endif %}
+                
+
+				<a href="{{ url_for('user.logout') }}" class="action-card" style="border-color: #dc3545;">
+                    <h3 style="color: #dc3545;">🚪 Logout</h3>
+                    <p>Disconnect from the system</p>
+                </a>
+            </div>
+        {% else %}
+
+		<div class="welcome-section">
+                <h1>Log Monitoring Panel</h1>
+                <p>Please log in to access the system</p>
+            </div>
+            
+            <form method="POST" action="{{ url_for('user.index') }}">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn-submit">Login</button>
+            </form>
+        {% endif %}
+        
+		<br>
+
+        {% block body %}{% endblock %}
+    </div>
+    
+</body>
+</html>
